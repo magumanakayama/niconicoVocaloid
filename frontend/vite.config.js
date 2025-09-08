@@ -6,7 +6,13 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: '0.0.0.0',
-    port: 3000
+    port: 3000,
+    // proxy: {
+    //   '/api': {
+    //     target: 'https://snapshot.search.nicovideo.jp',
+    //     changeOrigin: true,
+    //   },
+    // },
   },
   test: {
     globals: true,
