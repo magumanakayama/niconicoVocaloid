@@ -8,7 +8,7 @@ d_eb:
 	@docker exec -it backend bash
 
 d_ef:
-	@docker exec -it frontend bash
+	@docker exec -it niconico-vocaloid-frontend bash
 
 d_p:
 	@docker ps
