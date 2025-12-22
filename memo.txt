@@ -1,0 +1,46 @@
+select * from mybook;
+delete from mybook where id='2';
+
+# テーブル作成1
+create table book (
+  id integer, 
+  name varchar(20)
+);
+
+# データ挿入1
+insert into book values
+  ('1', 'Nのために'),
+  ('2', '贖罪'),
+  ('3', '成瀬は天下を取りに行く'),
+  ('4', 'かがみの孤城'),
+  ('5', '流浪の月');
+
+# テーブル作成2
+create table auhtor (
+  book varchar(20),
+  author varchar(20)
+);
+
+# データ挿入2
+insert into author values
+  ('Nのために', '湊かなえ'),
+  ('成瀬は天下を取りに行く', '宮島未奈'),
+  ('かがみの孤城', '辻村深月'),
+  ('流浪の月', '凪良ゆう');
+
+# INNER JOIN
+select * from book join author on book.name = author.name;
+
+# LEFT JOIN
+select * from book left join author on book.name = author.name;
+
+# テーブル削除
+drop table mybook;
+
+# テーブル名変更
+alter table mybook rename to book;
+
+# カラム名変更
+alter table author rename column book to name;
+
+
