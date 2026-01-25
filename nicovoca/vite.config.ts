@@ -1,3 +1,17 @@
+// import { defineConfig } from 'vite'
+// import react from '@vitejs/plugin-react'
+
+// // https://vite.dev/config/
+// export default defineConfig({
+//   plugins: [
+//     react({
+//       babel: {
+//         plugins: [['babel-plugin-react-compiler']],
+//       },
+//     }),
+//   ],
+// })
+
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
@@ -14,10 +28,10 @@ export default defineConfig({
       },
     },
   },
-  test: {
-    globals: true,
-    environment: 'jsdom',
-  },
+  // test: {
+  //   globals: true,
+  //   environment: 'jsdom',
+  // },
   // baseオプションは、GitHub Pagesでホスティングする際に必要
   // リポジトリ名に合わせて変更する
   // 例: https://ユーザー名.github.io/リポジトリ名

@@ -3,8 +3,8 @@
 {
   "name": "devcontainer",
   "dockerComposeFile": "../docker-compose.yml",
-  "service": "frontend",
-  "workspaceFolder": "/frontend",
+  "service": "nicovoca",
+  "workspaceFolder": "/nicovoca",
   // 必要な拡張機能を指定
   "customizations": {
     "vscode": {

@@ -1,6 +1,6 @@
 # version: '3'
 services:
-  frontend:
+  nicovoca:
     build:
       context: ./
       dockerfile: Dockerfile_frontend
@@ -10,7 +10,7 @@ services:
     user: "${UID}:${GID}"
     container_name: niconico-vocaloid-frontend
     volumes:
-      - ./frontend:/frontend
+      - ./nicovoca:/nicovoca
     environment:
       USER_UID: ${UID}
       USER_GID: ${GID}
