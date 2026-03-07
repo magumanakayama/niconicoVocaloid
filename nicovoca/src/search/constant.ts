@@ -7,13 +7,12 @@ const USER_AGENT = "magumanakayama"
 export const generateSearchUrl = (query: { title: string }) => {
 
   const SEARCH_INFO = {
-    targets: "title",
-    // query: "r-906",
+    targets: "tags",
     fields: "contentId,title,userId,viewCounter,thumbnailUrl,startTime",
     filters: "filters%5BviewCounter%5D%5Bgte%5D=10000",
     sort: "-viewCounter",
     offset: 0,
-    limit: 15,
+    limit: 100,
   }
 
   const { targets, fields, filters, sort, offset, limit } = SEARCH_INFO;

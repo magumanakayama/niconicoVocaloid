@@ -1,5 +1,5 @@
 // MUI
-import { TextField, Button, Stack } from '@mui/material';
+import { Button, Stack, Select, MenuItem } from '@mui/material';
 
 // 汎用コンポーネント
 // ToDo: @から始まる絶対パスでインポートできるようにする
@@ -7,9 +7,10 @@ import { BackButton, FetchButton } from '../lib/Buttons';
 
 // 検索ボックスコンポーネント
 const SearchBox = ({ fetchInstance, searchInstance, generateSearchUrl }) => {
+  const VocaloPs = JSON.parse(sessionStorage.getItem('VocaloidP') || '[]');
   return (
     <Stack direction="column" sx={{ m: 2 }} spacing={1}>
-      <InputField searchInstance={searchInstance} />
+      <SelectField searchInstance={searchInstance} VocaloPs={VocaloPs} />
       <SearchButtons fetchInstance={fetchInstance} searchInstance={searchInstance} generateSearchUrl={generateSearchUrl} />
     </Stack>
   );
@@ -17,26 +18,19 @@ const SearchBox = ({ fetchInstance, searchInstance, generateSearchUrl }) => {
 
 export default SearchBox;
 
-// 入力フィールド
-const InputField = ({ searchInstance }) => {
+const SelectField = ({ searchInstance, VocaloPs }) => {
   const { query, setQuery } = searchInstance;
-  const QUERY_TO_LABEL = {
-    title: 'ボカロP',
-    // 他のフィールドのラベルもここに追加
-  };
 
   return (
-    <Stack direction="row" spacing={1}>
-      {Object.keys(query).map(key => (
-        <TextField
-          key={key}
-          label={QUERY_TO_LABEL[key]}
-          value={query[key]}
-          onChange={e => setQuery({ ...query, [key]: e.target.value })}
-          size="small"
-        />
+    <Select
+      value={query.title}
+      label="ボカロP"
+      onChange={e => setQuery({ ...query, title: e.target.value })}
+    >
+      {VocaloPs.map(vp => (
+        <MenuItem key={vp.id} value={vp.title}>{vp.title}</MenuItem>
       ))}
-    </Stack>
+    </Select>
   );
 };
 
@@ -46,7 +40,7 @@ const SearchButtons = ({ fetchInstance, searchInstance, generateSearchUrl }) => 
   // promiseをstateかつキーにすることでuseを制御
   //// promiseが変数だとrequestが変わるたびに再レンダリングされてしまうため発火タイミング制御が難しくなる
   const { loading, beginRequest } = fetchInstance;
-  const { query, setQuery, setPrevQuery, diff } = searchInstance;
+  const { query, setPrevQuery, diff } = searchInstance;
 
   // 検索ボタン押下時のハンドラ
   const handleSearch = () => {
@@ -60,13 +54,7 @@ const SearchButtons = ({ fetchInstance, searchInstance, generateSearchUrl }) => 
   return (
     <Stack direction="row" justifyContent="flex-end" spacing={1}>
       <BackButton />
-      <DebugButton query={query} setQuery={setQuery} />
       <FetchButton loading={loading} onClick={handleSearch} disabled={!diff} />
     </Stack>
   );
 };
-
-// デバッグ用ボタン
-const DebugButton = ({ query, setQuery }) => (
-  <Button variant="contained" onClick={() => setQuery({ ...query, title: 'r-906' })}>r-906</Button>
-);
