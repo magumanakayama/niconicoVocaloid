@@ -4,7 +4,20 @@ const CONTEXT = "magumanakayama"
 const USER_AGENT = "magumanakayama"
 
 // 検索URL生成関数
-export const generateSearchUrl = (search_info) => {
-  const { targets, query, fields, filters, sort, offset, limit } = search_info
-  return `${TARGET_URL}?targets=${targets}&q=${query}&fields=${fields}&${filters}&_sort=${sort}&_offset=${offset}&_limit=${limit}&_context=${CONTEXT}&userAgent=${USER_AGENT}`
+export const generateSearchUrl = (query: { title: string }) => {
+
+  const SEARCH_INFO = {
+    targets: "title",
+    // query: "r-906",
+    fields: "contentId,title,userId,viewCounter,thumbnailUrl,startTime",
+    filters: "filters%5BviewCounter%5D%5Bgte%5D=10000",
+    sort: "-viewCounter",
+    offset: 0,
+    limit: 15,
+  }
+
+  const { targets, fields, filters, sort, offset, limit } = SEARCH_INFO;
+  const { title } = query;
+
+  return `${TARGET_URL}?targets=${targets}&q=${title}&fields=${fields}&${filters}&_sort=${sort}&_offset=${offset}&_limit=${limit}&_context=${CONTEXT}&userAgent=${USER_AGENT}`
 }

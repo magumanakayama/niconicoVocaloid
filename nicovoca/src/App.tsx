@@ -1,42 +1,43 @@
-import { useState } from 'react'
-import { Button } from '@mui/material'
-import { useFetch } from './components/useFetch.ts';
 import './App.css'
 
 // 検索URL生成関数
-import { generateSearchUrl } from './search/constant.ts';
+import { generateSearchUrl } from './search/constant';
 
-// 動画カード
-import VideoCard from './components/utils/VideoCard.tsx';
+// フェッチコンポーネント
+import FetchComponent from './lib/FetchComponent';
+
+// カスタムフック
+import useFetchPromise from './components/hook/fetch';
+import useSearch from './components/hook/search';
+
+// カスタムコンポーネント
+import SearchBox from './search/SearchBox';
+import ErrorInfo from './search/SearchError';
+import VideoCard from './components/utils/VideoCard';
 
 function App() {
-  const [searchUrl, setSearchUrl] = useState('');
+  // フェッチの状態を管理
+  const fetchInstance = useFetchPromise();
+  const { fetchPromise, beginRequest } = fetchInstance;
 
-  const handleSearch = () => {
-    const search_info = {
-      targets: "title",
-      query: "r-906",
-      fields: "contentId,title,userId,viewCounter,thumbnailUrl,startTime",
-      filters: "filters%5BviewCounter%5D%5Bgte%5D=10000",
-      sort: "-viewCounter",
-      offset: 0,
-      limit: 3,
-    }
-    console.log("Url", generateSearchUrl(search_info));
-    setSearchUrl(generateSearchUrl(search_info));
-  }
-
-
-  const { data, loading, error } = useFetch(searchUrl);
-  console.log("searchUrl", searchUrl);
-  console.log("data", data);
+  // 検索の状態を管理
+  const defaultQuery = { title: '' };
+  const searchInstance = useSearch(defaultQuery);
+  // const { page, setPage, diff } = searchInstance;
 
   return (
     <>
-      <Button variant="contained" color="primary" onClick={handleSearch}>
-        Search
-      </Button>
-      {data && data.data.map(item => <VideoCard key={item.contentId} {...item} />)}
+      {/* 検索ボックス */}
+      <SearchBox fetchInstance={fetchInstance} searchInstance={searchInstance} generateSearchUrl={generateSearchUrl} />
+      {/* プロミス生成時にフェッチコンポーネントを生成 */}
+      {fetchPromise && (
+        <FetchComponent
+          promise={fetchPromise}
+          Success={(searchedList: any) => searchedList.data.map((item: any) => <VideoCard key={item.contentId} {...item} />)}
+          Loading={() => <></>}
+          Error={ErrorInfo}
+        />
+      )}
     </>
   )
 }
